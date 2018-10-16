@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     parameters {
-         string(name: 'tomcat_dev', defaultValue: '35.166.210.154', description: 'Staging Server')
-         string(name: 'tomcat_prod', defaultValue: '34.209.233.6', description: 'Production Server')
+         string(name: 'tomcat_dev', defaultValue: '192.168.56.60', description: 'Staging Server')
+         string(name: 'tomcat_prod', defaultValue: '192.168.56.60', description: 'Production Server')
     }
 
     triggers {
@@ -13,7 +13,7 @@ pipeline {
 stages{
         stage('Build'){
             steps {
-                sh 'mvn clean package'
+                sh '/usr/local/src/apache-maven/bin/mvn clean package'
             }
             post {
                 success {
@@ -27,13 +27,13 @@ stages{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        sh "scp -i /home/jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps"
+                        sh "scp **/target/*.war jesbar02@${params.tomcat_dev}:/opt/tomcat/webapps"
                     }
                 }
 
                 stage ("Deploy to Production"){
                     steps {
-                        sh "scp -i /home/jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps"
+                        sh "scp **/target/*.war jesbar02@${params.tomcat_prod}:/opt/tomcat-production/webapps"
                     }
                 }
             }

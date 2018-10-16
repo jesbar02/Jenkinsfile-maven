@@ -27,13 +27,13 @@ stages{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/FullyAutomatedPipeline/webapp/target/webapp.war jesbar02@${params.tomcat_dev}:/opt/tomcat/webapps"
+                        sh "scp -i /var/lib/jenkins/secrets/jenkinskey.pub /var/lib/jenkins/workspace/FullyAutomatedPipeline/webapp/target/webapp.war jesbar02@${params.tomcat_dev}:/opt/tomcat/webapps"
                     }
                 }
 
                 stage ("Deploy to Production"){
                     steps {
-                        sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/FullyAutomatedPipeline/webapp/target/webapp.war jesbar02@${params.tomcat_prod}:/opt/tomcat-production/webapps"
+                        sh "scp -i /var/lib/jenkins/secrets/jenkinskey.pub /var/lib/jenkins/workspace/FullyAutomatedPipeline/webapp/target/webapp.war jesbar02@${params.tomcat_prod}:/opt/tomcat-production/webapps"
                     }
                 }
             }

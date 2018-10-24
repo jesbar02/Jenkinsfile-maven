@@ -2,10 +2,9 @@ pipeline {
 	agent any
 
 	environment{
-
         	tagnum = "${env.BUILD_NUMBER}"
+	}
 
-    }
 	stages{
 		stage('Build'){
 			steps{
